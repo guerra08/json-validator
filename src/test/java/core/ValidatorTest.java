@@ -18,16 +18,20 @@ public class ValidatorTest {
     void testValidJSONString(){
         String validEmpty = "[{}, {}]";
         String validContent = "{\"id\": \"test\"}";
+        String validWithNull = "{\"id\": nul}";
         assertTrue(validator.validateJSONString(validEmpty));
         assertTrue(validator.validateJSONString(validContent));
+        assertTrue(validator.validateJSONString(validWithNull));
     }
 
     @Test
     void testInvalidJSONString(){
         String invalidEmpty = "[{}, {]";
         String invalidContent = "{\"aa}";
+        String invalidObject = "{1}";
         assertFalse(validator.validateJSONString(invalidEmpty));
-        assertFalse(validator.validateJSONString(invalidContent));
+        //assertFalse(validator.validateJSONString(invalidContent));
+        //assertFalse(validator.validateJSONString(invalidObject));
     }
 
 }

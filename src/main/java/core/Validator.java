@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Validator {
 
-    private final Set<Character> openingSymbols = new HashSet<>(Arrays.asList('{', '[', '"'));
-    private final Set<Character> closingSymbols = new HashSet<>(Arrays.asList('}', ']', '"'));
+    private final Set<Character> openingSymbols = new HashSet<>(Arrays.asList('{', '['));
+    private final Set<Character> closingSymbols = new HashSet<>(Arrays.asList('}', ']'));
     private final Set<Map.Entry<Character, Character>> pairs = new HashSet<>(
             Arrays.asList(Map.entry('{', '}'), Map.entry('[', ']'), Map.entry('"', '"'))
     );
@@ -16,19 +16,31 @@ public class Validator {
      * @return boolean
      */
     public boolean validateJSONString(String json){
-        Stack<Character> opening = new Stack<>();
-        json.chars().forEach(c -> {
-            Character current = (char) c;
-            if(isClosingSymbol(current) && matches(opening.peek(), current)){
-                opening.pop();
+        Stack<Character> openingStack = new Stack<>();
+        Stack<Character> closingStack = new Stack<>();
+        for (Character current : json.toCharArray()){
+            if(isOpeningSymbol(current)){
+                openingStack.push(current);
             }
-            else if(isOpeningSymbol(current)) opening.push(current);
-        });
-        return opening.isEmpty();
+            if(isClosingSymbol(current)){
+                closingStack.push(current);
+            }
+            if(!openingStack.isEmpty() && !closingStack.isEmpty()){
+                if(matches(openingStack.peek(), closingStack.peek())){
+                    openingStack.pop();
+                    closingStack.pop();
+                }
+            }
+        }
+        return openingStack.isEmpty() && closingStack.isEmpty();
     }
 
     private boolean isOpeningSymbol(Character c){
         return openingSymbols.contains(c);
+    }
+
+    private boolean isDoubleQuotes(Character c){
+        return c.equals('"');
     }
 
     private boolean isClosingSymbol(Character c){
