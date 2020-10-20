@@ -11,6 +11,7 @@ public class Validator {
     );
 
     /**
+     * TODO: Validate the contents of the JSON. Currently, it only checks the skeleton
      * Validates a JSON String
      * @param json String JSON
      * @return boolean
