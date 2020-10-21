@@ -11,6 +11,7 @@ public class Validator {
     /**
      * TODO: Add all the possible cases
      * Validates a JSON String
+     * @throws Exception Invalid syntax
      * @param json String JSON
      * @return boolean
      */
