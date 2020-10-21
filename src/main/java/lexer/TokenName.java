@@ -1,0 +1,7 @@
+package lexer;
+
+public enum TokenName {
+
+    KEYWORD, CONSTANT, SEPARATOR, SPECIAL_CHAR, LETTER, NUMBER, DEC_SEPARATOR, SPACE
+
+}

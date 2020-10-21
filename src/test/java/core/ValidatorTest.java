@@ -15,27 +15,53 @@ public class ValidatorTest {
     }
 
     @Test
-    void testValidJSONString(){
-        String validEmpty = "[{}, {}]";
-        String validArray = "[]";
-        String validContent = "{\"id\": \"test\"}";
-        String validWithNull = "{\"id\": nul}";
-        assertTrue(validator.validateJSONString(validEmpty));
-        assertTrue(validator.validateJSONString(validContent));
-        assertTrue(validator.validateJSONString(validWithNull));
-        assertTrue(validator.validateJSONString(validArray));
+    void testValidEmptyJSONStrings() throws Exception {
+        String validEmptyObject = "{}";
+        String validEmptyArray = "[]";
+        String validEmptyArrayInArray = "[[]]";
+        String validEmptyObjectInArray = "[{}]";
+        String inception = "[[[{}]]]";
+
+
+        assertTrue(validator.validateJSONString(validEmptyObject));
+        assertTrue(validator.validateJSONString(validEmptyArray));
+        assertTrue(validator.validateJSONString(validEmptyArrayInArray));
+        assertTrue(validator.validateJSONString(validEmptyObjectInArray));
+        assertTrue(validator.validateJSONString(inception));
     }
 
     @Test
-    void testInvalidJSONString(){
-        String invalidEmpty = "[{}, {]";
-        String invalidArray = "[ ]]";
-        String invalidContent = "{\"aa}";
-        String invalidObject = "{1}";
-        assertFalse(validator.validateJSONString(invalidEmpty));
-        assertFalse(validator.validateJSONString(invalidArray));
-        //assertFalse(validator.validateJSONString(invalidContent));
-        //assertFalse(validator.validateJSONString(invalidObject));
+    void testInvalidEmptyJSONStrings() throws Exception {
+        String invalidEmptyObject = "{";
+        String invalidEmptyArrayInArray = "[[[]]";
+
+
+        assertFalse(validator.validateJSONString(invalidEmptyObject));
+        assertFalse(validator.validateJSONString(invalidEmptyArrayInArray));
+    }
+
+    @Test
+    void testValidJSONStrings() throws Exception {
+        String validWithOne = "{\"id\": \"juca123\"}";
+        String validWithEmptyArray = "{\"id\": []}";
+        String validWithEmptyObject = "{\"id\": {}}";
+        String validWithObject = "{\"id\": {\"name\": \"bruno\"}}";
+
+        assertTrue(validator.validateJSONString(validWithOne));
+        assertTrue(validator.validateJSONString(validWithEmptyArray));
+        assertTrue(validator.validateJSONString(validWithEmptyObject));
+        assertTrue(validator.validateJSONString(validWithObject));
+    }
+
+    @Test
+    void testInvalidJSONStrings() throws Exception {
+        String invalidWithOne = "{\"id\": \"juca123}";
+        String invalidWithEmptyArray = "{\"id\": [}";
+        String invalidWithObject = "{\"id\": {\"name\": \"bruno}}";
+
+        assertFalse(validator.validateJSONString(invalidWithOne));
+        assertFalse(validator.validateJSONString(invalidWithEmptyArray));
+        assertFalse(validator.validateJSONString(invalidWithObject));
     }
 
 }
